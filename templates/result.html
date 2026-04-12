@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Analysis Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 AI Resume Screener</h1>
+            <p>Analysis Results</p>
+        </div>
+
+        <!-- Match Score -->
+        <div class="card score-card">
+            <h2>Match Score</h2>
+            <div class="score-circle 
+                {% if results.match_score >= 70 %}score-high
+                {% elif results.match_score >= 40 %}score-medium
+                {% else %}score-low{% endif %}">
+                {{ results.match_score }}%
+            </div>
+            <h3>{{ results.recommendation }}</h3>
+            <p>{{ results.recommendation_detail }}</p>
+        </div>
+
+        <!-- Experience Level -->
+        <div class="card">
+            <h2>👤 Experience Level</h2>
+            <div class="badge">{{ results.experience_level }}</div>
+        </div>
+
+        <!-- Skills Found -->
+        <div class="card">
+            <h2>🛠️ Skills Detected ({{ results.skills|length }})</h2>
+            {% if results.skills %}
+                <div class="skills-grid">
+                    {% for skill in results.skills %}
+                        <span class="skill-tag">✅ {{ skill }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No matching skills detected.</p>
+            {% endif %}
+        </div>
+
+        <!-- Keyword Matches -->
+        <div class="card">
+            <h2>🔑 Keyword Matches with Job Description</h2>
+            {% if results.word_matches %}
+                <div class="skills-grid">
+                    {% for word in results.word_matches %}
+                        <span class="keyword-tag">{{ word }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No keyword matches found.</p>
+            {% endif %}
+        </div>
+
+        <a href="/" class="btn">🔄 Analyze Another Resume</a>
+    </div>
+</body>
+</html>
